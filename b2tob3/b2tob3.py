@@ -49,9 +49,6 @@ regexes = [
     (re.compile(affix + r'thumbnail' + affix), '\\1img-thumbnail\\2'),
 ]
 
-extensions = ('.html', '.htm', '.css', '.js')
-
-
 def make_replacements(content):
     """Perform replacements in file content. Return changed content and the
     number of replacements made."""
@@ -76,6 +73,11 @@ def main():
         help='Be verbose and print names of changed files.'
     )
 
+    parser.add_option(
+        '-t', '--type', dest='extensions', help='Type of files',
+         default= ('.html', '.htm', '.css', '.js', '.php')
+    )
+
     (options, args) = parser.parse_args()
 
     pwd = os.path.abspath(options.pwd)
@@ -86,7 +88,7 @@ def main():
 
     for root, dirs, files in os.walk(pwd):
         for f in files:
-            if not f.endswith(extensions):
+            if not f.endswith(options.extensions):
                 continue
 
             count_files += 1
